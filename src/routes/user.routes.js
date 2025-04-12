@@ -4,12 +4,14 @@ const router = express.Router()
 const {
   createUser,
   getUser,
-  getAllUsers
+  getAllUsers,
+  getUserByPhone
 } = require('../controllers/user.controller')
 
 
 router.post('/create-user', createUser)
 router.get('/get-user', getUser)
 router.get('/get-all-users', getAllUsers)
+router.get('/get-user-by-phone', getUserByPhone)
 
 module.exports = router

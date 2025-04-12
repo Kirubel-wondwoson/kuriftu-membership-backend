@@ -41,3 +41,13 @@ exports.getAllUsers = async (req, res) => {
     res.status(500).json({message: 'Internal server error'})
   }
 }
+exports.getUserByPhone = async (req, res) => {
+  try {
+    const user = await User.findOne({phone: phone})
+
+    res.status(200).json({user: user})
+  } catch (error) {
+    console.log('Error getting user by phone number', error)
+    res.status(500).json({message: 'Internal server error'})
+  }
+}

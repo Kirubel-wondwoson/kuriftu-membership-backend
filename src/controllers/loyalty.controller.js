@@ -1,9 +1,7 @@
 const User = require('../models/User');
 const Reward = require('../models/Reward'); 
 
-const {
-  calculateTier
-} = require('../utils/tierCalculator');
+const calculateTier  = require('../utils/tierCalculator');
 
 
 exports.addPoints = async (req, res) => {
@@ -19,7 +17,7 @@ exports.addPoints = async (req, res) => {
     const points = pointMap[type];
     if (!points) return res.status(400).send({ message: "Invalid type" });
 
-    const user = await User.findOne(phone);
+    const user = await User.findOne({phone: phone});
     if (!user) return res.status(404).send({ message: "User not found" });
 
     if (!user.loyalty) {
