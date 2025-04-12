@@ -31,3 +31,13 @@ exports.getUser = async (req, res) => {
     res.status(500).json({message: 'Internal server error'})
   }
 }
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find()
+
+    res.status(200).json({users: users})
+  } catch (error) {
+    console.log('Error getting user', error)
+    res.status(500).json({message: 'Internal server error'})
+  }
+}

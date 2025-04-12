@@ -12,8 +12,10 @@ exports.addPoints = async (req, res) => {
       spending: amount * 1,
       referral: 200
     };
-  
+
     const points = pointMap[type];
+    if (!points) return res.status(400).send({ message: "Invalid type" });
+
     const user = await User.findById(userId);
     if (!user) return res.status(404).send({ message: "User not found" });
 
@@ -21,18 +23,36 @@ exports.addPoints = async (req, res) => {
       user.loyalty = { points: 0, tier: 'Bronze', history: [] };
     }
 
-    user.loyalty.points += points;
-    user.loyalty.tier = calculateTier(user.loyalty.points);
-    user.loyalty.history.push({ type, points, date: new Date() });
-  
-    await user.save();
-    res.send({ message: `${points} points added.`, tier: user.loyalty.tier, history: user.loyalty.history });
-  } catch (error) {
-    console.log('Error adding points', error)
-    res.status(500).json({message: 'Internal server error'})
-  }
+    // Check if this is their first booking/spending to give 500 bonus points
+    const hasPriorActivity = user.loyalty.history.some(
+      entry => entry.type === 'booking' || entry.type === 'spending'
+    );
 
+    let totalPoints = points;
+
+    if (!hasPriorActivity && (type === 'booking' || type === 'spending')) {
+      totalPoints += 500;
+    }
+
+    user.loyalty.points += totalPoints;
+    user.loyalty.tier = calculateTier(user.loyalty.points);
+
+    user.loyalty.history.push({ type, points: totalPoints, date: new Date() });
+
+    await user.save();
+
+    res.send({
+      message: `${totalPoints} points added.`,
+      tier: user.loyalty.tier,
+      history: user.loyalty.history
+    });
+
+  } catch (error) {
+    console.log('Error adding points', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
+
 
 
 exports.redeemPoints = async (req, res) => {
