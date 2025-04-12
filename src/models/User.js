@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { stringify } = require('querystring');
 
 const LoyaltySchema = new mongoose.Schema({
   points: { type: Number, default: 0 },
@@ -28,7 +29,12 @@ const LoyaltySchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema({
   name: String,
   email: String,
+  password: String,
   phone: String,
+  gender: {
+    type: String,
+    enum: ['Male', 'Female']
+  },
   loyalty: LoyaltySchema
 });
 
