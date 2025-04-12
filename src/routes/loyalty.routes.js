@@ -7,6 +7,6 @@ const {
 } = require('../controllers/loyalty.controller')
 
 router.post('/add-points', addPoints)
-router.post('/redeem-points', redeemPoints)
+router.post('/redeem-points/:userId', redeemPoints)
 
 module.exports = router

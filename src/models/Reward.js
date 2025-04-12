@@ -6,7 +6,10 @@ const RewardSchema = new mongoose.Schema({
   cost: Number, // in points
   available: { type: Boolean, default: true },
   quantity: Number, // (optional)
-  category: String, // e.g. 'spa', 'stay', 'food'
+  category: {
+    type: String,
+    enum: ['spa', 'stay', 'food']
+  }, 
 });
 
 const Reward = mongoose.model('Reward', RewardSchema);

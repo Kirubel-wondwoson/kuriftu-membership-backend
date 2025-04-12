@@ -1,7 +1,10 @@
 const User = require('../models/User');
 const Reward = require('../models/Reward'); 
 
-const calculateTier = require('../utils/tierCalculator');
+const {
+  calculateTier
+} = require('../utils/tierCalculator');
+
 
 exports.addPoints = async (req, res) => {
   try {
@@ -9,7 +12,7 @@ exports.addPoints = async (req, res) => {
 
     const pointMap = {
       booking: amount * 100,
-      spending: amount * 1,
+      spending: amount * 0.2,
       referral: 200
     };
 
@@ -56,8 +59,10 @@ exports.addPoints = async (req, res) => {
 
 
 exports.redeemPoints = async (req, res) => {
+
+  const userId = req.params.userId
   try {
-    const { userId, rewardId } = req.body;
+    const { rewardId } = req.body;
 
     const user = await User.findById(userId);
     if (!user) return res.status(404).send({ message: "User not found" });

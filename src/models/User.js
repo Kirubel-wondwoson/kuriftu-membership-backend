@@ -32,10 +32,6 @@ const UserSchema = new mongoose.Schema({
   email: String,
   phone: String,
   password: String,
-  // gender: {
-  //   type: String,
-  //   enum: ['Male', 'Female']
-  // },
   referralCode: {
     type: String,
     unique: true,

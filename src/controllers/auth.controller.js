@@ -5,6 +5,10 @@ const {
   generateToken
 } = require('../utils/auth.utils')
 
+const {
+  generateReferralCode
+} = require('../utils/user.utils');
+
 exports.SignUp = async (req, res) => {
   const { fname, lname, email, phone, password} = req.body
   try {
@@ -25,6 +29,7 @@ exports.SignUp = async (req, res) => {
       phone,
       password: hashedPassword,
     })
+    newUser.referralCode = generateReferralCode(newUser._id.toString());
 
     // jwt sign
     const token = await generateToken(newUser)
@@ -49,7 +54,7 @@ exports.LogIn = async (req, res) => {
       return res.status(404).json({ message: 'User not found' })
     }
 
-    const isMatch = await bcrypt.compare(password, existingUser.password)
+    const isMatch = bcrypt.compare(password, existingUser.password)
     if (!isMatch) {
       return res.status(400).json({ message: 'Incorrect Password. Please try again' })
     }
@@ -59,7 +64,7 @@ exports.LogIn = async (req, res) => {
 
     res.status(200).json({
       message: 'Logged in successfully!',
-      role: existingUser.role,
+      user: user,
       token: token
     })
 
