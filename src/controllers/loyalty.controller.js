@@ -8,7 +8,7 @@ const {
 
 exports.addPoints = async (req, res) => {
   try {
-    const { userId, type, amount } = req.body;
+    const { phone, type, amount } = req.body;
 
     const pointMap = {
       booking: amount * 100,
@@ -19,7 +19,7 @@ exports.addPoints = async (req, res) => {
     const points = pointMap[type];
     if (!points) return res.status(400).send({ message: "Invalid type" });
 
-    const user = await User.findById(userId);
+    const user = await User.findOne(phone);
     if (!user) return res.status(404).send({ message: "User not found" });
 
     if (!user.loyalty) {
@@ -127,3 +127,4 @@ exports.redeemPoints = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
