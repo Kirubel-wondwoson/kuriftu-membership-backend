@@ -6,7 +6,7 @@ const {
 } = require('../utils/auth.utils')
 
 exports.SignUp = async (req, res) => {
-  const { name, email, password, phone, gender,} = req.body
+  const { fname, lname, email, phone, password} = req.body
   try {
 
     // hash the password
@@ -19,11 +19,11 @@ exports.SignUp = async (req, res) => {
 
 
     const newUser = await User.create({
-      name,
+      fname,
+      lname,
       email,
-      password: hashedPassword,
       phone,
-      gender,
+      password: hashedPassword,
     })
 
     // jwt sign

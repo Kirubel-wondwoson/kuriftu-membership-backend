@@ -27,14 +27,15 @@ const LoyaltySchema = new mongoose.Schema({
 });
 
 const UserSchema = new mongoose.Schema({
-  name: String,
+  fname: String,
+  lname: String,
   email: String,
-  password: String,
   phone: String,
-  gender: {
-    type: String,
-    enum: ['Male', 'Female']
-  },
+  password: String,
+  // gender: {
+  //   type: String,
+  //   enum: ['Male', 'Female']
+  // },
   referralCode: {
     type: String,
     unique: true,
