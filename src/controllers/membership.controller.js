@@ -1,9 +1,11 @@
+const User = require('../models/User')
+
 exports.purchaseMembership = async (req, res) => {
   try {
     const { userId, amount } = req.body;
 
     // Membership cost (can also come from DB/config)
-    const requiredAmount = 999; // Example: 999 ETB for 1 year
+    const requiredAmount = 10000; 
 
     if (amount < requiredAmount) {
       return res.status(400).json({ message: `Membership requires at least ${requiredAmount} ETB.` });

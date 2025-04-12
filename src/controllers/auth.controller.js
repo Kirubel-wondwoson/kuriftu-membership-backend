@@ -19,12 +19,11 @@ exports.SignUp = async (req, res) => {
 
 
     const newUser = await User.create({
-      fullName,
+      name,
       email,
       password: hashedPassword,
-      role,
-      authProvider: ['Local'],
-      enrolledCourses: []
+      phone,
+      gender,
     })
 
     // jwt sign
