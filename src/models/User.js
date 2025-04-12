@@ -35,6 +35,14 @@ const UserSchema = new mongoose.Schema({
     type: String,
     enum: ['Male', 'Female']
   },
+  referralCode: {
+    type: String,
+    unique: true,
+    default: () => Math.random().toString(36).substr(2, 8).toUpperCase()
+  },
+  referredBy: {
+    type: String // Stores referralCode of the referrer
+  },
   loyalty: LoyaltySchema
 });
 
