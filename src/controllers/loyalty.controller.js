@@ -39,7 +39,6 @@ exports.redeemPoints = async (req, res) => {
   try {
     const { userId, rewardId } = req.body;
 
-    // 1. Find user and reward
     const user = await User.findById(userId);
     if (!user) return res.status(404).send({ message: "User not found" });
 
@@ -48,15 +47,13 @@ exports.redeemPoints = async (req, res) => {
       return res.status(404).send({ message: "Reward not available" });
     }
 
-    // 2. Check if user has enough points
     if (user.loyalty.points < reward.cost) {
       return res.status(400).send({ message: "Insufficient points" });
     }
 
-    // 3. Deduct points
     user.loyalty.points -= reward.cost;
 
-    // 4. Tier logic with 1-year protection
+    // Tier logic with 1-year protection
     const newTier = calculateTier(user.loyalty.points);
     const currentTier = user.loyalty.tier;
     const tierOrder = ['Bronze', 'Silver', 'Gold', 'Platinum'];
@@ -68,7 +65,6 @@ exports.redeemPoints = async (req, res) => {
     oneYearAgo.setFullYear(now.getFullYear() - 1);
 
     if (newTierIndex > currentTierIndex) {
-      // Allow upgrade
       user.loyalty.tier = newTier;
       user.loyalty.tierAchievedDate = now;
     } else if (
@@ -82,7 +78,6 @@ exports.redeemPoints = async (req, res) => {
     }
     // else: tier remains the same (no change)
 
-    // 5. Add to loyalty history
     user.loyalty.history.push({
       type: "redeem",
       points: -reward.cost,
@@ -90,13 +85,11 @@ exports.redeemPoints = async (req, res) => {
       date: now
     });
 
-    // 6. Decrease reward quantity
     if (reward.quantity > 0) {
       reward.quantity -= 1;
       await reward.save();
     }
 
-    // 7. Save user
     await user.save();
 
     res.send({

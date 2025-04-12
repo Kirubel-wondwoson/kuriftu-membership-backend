@@ -15,7 +15,14 @@ const LoyaltySchema = new mongoose.Schema({
       date: Date,
       reward: String
     }
-  ]
+  ],
+
+  membership: {
+    isActive: { type: Boolean, default: false },
+    startDate: { type: Date },
+    expiryDate: { type: Date },
+    amountPaid: { type: Number },
+  }
 });
 
 const UserSchema = new mongoose.Schema({
