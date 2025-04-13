@@ -10,7 +10,7 @@ const {
 
 
 router.post('/create-user', createUser)
-router.get('/get-user', getUser)
+router.get('/get-user/:userId', getUser)
 router.get('/get-all-users', getAllUsers)
 router.get('/get-user-by-phone', getUserByPhone)
 

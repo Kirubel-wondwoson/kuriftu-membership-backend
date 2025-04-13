@@ -21,8 +21,8 @@ exports.createUser = async (req, res) => {
 }
 
 exports.getUser = async (req, res) => {
+  const userId = req.params.userId
   try {
-    const {userId} = req.body
     const user = await User.findOne({userId: userId})
 
     res.status(200).json({user: user})
