@@ -126,3 +126,48 @@ exports.redeemPoints = async (req, res) => {
   }
 };
 
+
+exports.getPoint = async (req, res) => {
+  const userId = req.params.userId
+  try {
+    const user = await User.findById(userId);
+    if (!user || !user.loyalty) {
+      return res.status(404).json({ message: 'User or loyalty info not found' });
+    }
+    const points = user.loyalty.points || 0;
+    res.status(200).json({points})
+  } catch (error) {
+    console.log('Error fetching points', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+// exports.update
+
+// exports.updatePoint = async (req, res) => {
+//   try {
+//     const { userId, points } = req.body;
+
+//     const user = await User.findById(userId);
+//     if (!user || !user.loyalty) {
+//       return res.status(404).json({ message: 'User or loyalty info not found' });
+//     }
+
+//     // Update the points
+//     user.loyalty.points = points;
+
+//     // Optionally update tier again
+//     user.loyalty.tier = calculateTier(points);
+
+//     await user.save();
+
+//     res.status(200).json({
+//       message: 'Points updated successfully',
+//       points: user.loyalty.points,
+//       tier: user.loyalty.tier
+//     });
+//   } catch (error) {
+//     console.log('Error updating points', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// };

@@ -19,10 +19,10 @@ const LoyaltySchema = new mongoose.Schema({
   ],
 
   membership: {
+    tier: { type: String, enum: ['None', 'Golden', 'Platinum', 'Diamond'], default: 'None' },
+    startDate: Date,
+    endDate: Date,
     isActive: { type: Boolean, default: false },
-    startDate: { type: Date },
-    expiryDate: { type: Date },
-    amountPaid: { type: Number },
   }
 });
 
